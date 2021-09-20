@@ -10,10 +10,10 @@ jobs:
   test:
     steps:
     - name: Checkout commit
-	    uses: neuro-inc/upload-image-action@v21.9.3
-	    with:
-		  image: platformstorageapi
-		  token: ${{ secrets.GITHUB_TOKEN }}
+      uses: neuro-inc/upload-image-action@v21.9.3
+      with:
+        image: platformstorageapi
+        token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 
