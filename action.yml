@@ -16,6 +16,7 @@ runs:
   steps:
     - name: Export image
       run: docker save -o ${{ inputs.image }}.tar ${{ inputs.image }}:latest
+      shell: bash
     - name: Upload image artifact
       uses: actions/upload-artifact@v2
       with:
