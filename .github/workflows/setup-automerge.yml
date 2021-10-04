@@ -44,13 +44,16 @@ jobs:
         if [[ -z "$RET" && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
           echo "Add label 'dependencies'"
           gh pr edit --add-label 'dependencies' "$PR_URL"
+          echo "AUTOMERGE=1" >> $GITHUB_ENV
         fi
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     - name: Enable auto-merge if labeled
-      if: ${{ github.actor != 'dependabot[bot]' &&
-              contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+      if: ${{ env.AUTOMERGE || (
+                  github.actor != 'dependabot[bot]' &&
+                  contains(github.event.pull_request.labels.*.name, 'dependencies')
+              ) }}
       run: gh pr merge --auto --squash --delete-branch "$PR_URL"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
