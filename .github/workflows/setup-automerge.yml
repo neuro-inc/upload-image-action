@@ -41,7 +41,7 @@ jobs:
         echo "Test user permissions: $URL"
         PERM=$(gh api "$URL" --jq ".permission") || RET=$?
         echo "$RET: $PERM"
-        if [[ "$RET" -eq 0 && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
+        if [[ -z "$RET" && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
           gh pr edit --add-label 'dependencies' "$PR_URL"
         fi
       env:
