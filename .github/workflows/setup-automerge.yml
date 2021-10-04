@@ -39,8 +39,9 @@ jobs:
       run: |
         URL="/repos/${GITHUB_REPOSITORY}/collaborators/${GITHUB_ACTOR}/permission"
         echo "Test user permissions: $URL"
-        PERM=$(gh api "$URL" --jq ".permission") || ret=$?
-        if [[ "$ret" -eq 0 && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
+        PERM=$(gh api "$URL" --jq ".permission") || RET=$?
+        echo "$RET: $PERM"
+        if [[ "$RET" -eq 0 && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
           gh pr edit --add-label 'dependencies' "$PR_URL"
         fi
       env:
