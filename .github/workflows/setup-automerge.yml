@@ -37,10 +37,10 @@ jobs:
       if: ${{ contains(github.event.pull_request.body,
               'Committed via https://github.com/asottile/all-repos') }}
       run: |
-        URL="/repos/${GITHUB_REPOSITORY}/collaborators/${GITHUB_ACTOR}"
+        URL="/repos/${GITHUB_REPOSITORY}/collaborators/${GITHUB_ACTOR}/permission"
         echo "Test user permissions: $URL"
-        gh api "$URL" || ret=$?
-        if [[ "$ret" -eq 0 ]]; then
+        PERM=$(gh api "$URL" --jq ".permission") || ret=$?
+        if [[ "$ret" -eq 0 && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
           gh pr edit --add-label 'dependencies' "$PR_URL"
         fi
       env:
