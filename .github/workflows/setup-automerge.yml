@@ -42,6 +42,7 @@ jobs:
         PERM=$(gh api "$URL" --jq ".permission") || RET=$?
         echo "$RET: $PERM"
         if [[ -z "$RET" && ("$PERM" = 'write' || "$PERM" = 'admin') ]]; then
+          echo "Add label 'dependencies'"
           gh pr edit --add-label 'dependencies' "$PR_URL"
         fi
       env:
